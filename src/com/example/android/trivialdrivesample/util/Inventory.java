@@ -17,8 +17,13 @@ package com.example.android.trivialdrivesample.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Represents a block of information about in-app items.
@@ -30,6 +35,36 @@ public class Inventory {
 
     Inventory() { }
 
+    public JSONArray getAllOwnedSkusJson(){
+    	List<String> skus = getAllOwnedSkus();
+    	JSONArray jsonArray = new JSONArray();
+    	for (Iterator iterator = skus.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+			try {
+				jsonArray.put(new JSONObject(getSkuDetails(string).mJson));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    	return jsonArray;
+    }
+    
+    public JSONArray getAllPurchaseJson(){
+    	List<Purchase> skus = getAllPurchases();
+    	JSONArray jsonArray = new JSONArray();
+    	for (Iterator iterator = skus.iterator(); iterator.hasNext();) {
+    		Purchase purchase = (Purchase) iterator.next();
+			try {
+				jsonArray.put(new JSONObject(purchase.mOriginalJson));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+    	return jsonArray;
+    }
+    
     /** Returns the listing details for an in-app product. */
     public SkuDetails getSkuDetails(String sku) {
         return mSkuMap.get(sku);

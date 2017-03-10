@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.android.trivialdrivesample.plugin.IAPPlugin;
 import com.example.android.trivialdrivesample.util.IabHelper;
 import com.example.android.trivialdrivesample.util.IabResult;
 import com.example.android.trivialdrivesample.util.Inventory;
@@ -140,41 +141,42 @@ public class MainActivity extends Activity {
 
         // Some sanity checks to see if the developer (that's you!) really followed the
         // instructions to run this sample (don't put these checks on your app!)
-        if (base64EncodedPublicKey.contains("CONSTRUCT_YOUR")) {
-            throw new RuntimeException("Please put your app's public key in MainActivity.java. See README.");
-        }
-        if (getPackageName().startsWith("com.example")) {
-            throw new RuntimeException("Please change the sample's package name! See README.");
-        }
-
-        // Create the helper, passing it our context and the public key to verify signatures with
-        Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
-
-        // enable debug logging (for a production application, you should set this to false).
-        mHelper.enableDebugLogging(true);
-
-        // Start setup. This is asynchronous and the specified listener
-        // will be called once setup completes.
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    complain("Problem setting up in-app billing: " + result);
-                    return;
-                }
-
-                // Have we been disposed of in the meantime? If so, quit.c
-                if (mHelper == null) return;
-
-                // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                mHelper.queryInventoryAsync(mGotInventoryListener);
-            }
-        });
+//        if (base64EncodedPublicKey.contains("CONSTRUCT_YOUR")) {
+//            throw new RuntimeException("Please put your app's public key in MainActivity.java. See README.");
+//        }
+//        if (getPackageName().startsWith("com.example")) {
+//            throw new RuntimeException("Please change the sample's package name! See README.");
+//        }
+//
+//        // Create the helper, passing it our context and the public key to verify signatures with
+//        Log.d(TAG, "Creating IAB helper.");
+//        mHelper = new IabHelper(this, base64EncodedPublicKey);
+//
+//        // enable debug logging (for a production application, you should set this to false).
+//        mHelper.enableDebugLogging(true);
+//
+//        // Start setup. This is asynchronous and the specified listener
+//        // will be called once setup completes.
+//        Log.d(TAG, "Starting setup.");
+//        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+//            public void onIabSetupFinished(IabResult result) {
+//                Log.d(TAG, "Setup finished.");
+//
+//                if (!result.isSuccess()) {
+//                    // Oh noes, there was a problem.
+//                    complain("Problem setting up in-app billing: " + result);
+//                    return;
+//                }
+//
+//                // Have we been disposed of in the meantime? If so, quit.c
+//                if (mHelper == null) return;
+//
+//                // IAB is fully set up. Now, let's get an inventory of stuff we own.
+//                Log.d(TAG, "Setup successful. Querying inventory.");
+//                mHelper.queryInventoryAsync(mGotInventoryListener);
+//            }
+//        });
+        IAPPlugin.getInstance().init(base64EncodedPublicKey);
     }
 
     // Listener that's called when we finish querying the items and subscriptions we own
@@ -228,30 +230,31 @@ public class MainActivity extends Activity {
 
     // User clicked the "Buy Gas" button
     public void onBuyGasButtonClicked(View arg0) {
-        Log.d(TAG, "Buy gas button clicked.");
-
-        if (mSubscribedToInfiniteGas) {
-            complain("No need! You're subscribed to infinite gas. Isn't that awesome?");
-            return;
-        }
-
-        if (mTank >= TANK_MAX) {
-            complain("Your tank is full. Drive around a bit!");
-            return;
-        }
-
-        // launch the gas purchase UI flow.
-        // We will be notified of completion via mPurchaseFinishedListener
-        setWaitScreen(true);
-        Log.d(TAG, "Launching purchase flow for gas.");
-
-        /* TODO: for security, generate your payload here for verification. See the comments on
-         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
-         *        an empty string, but on a production app you should carefully generate this. */
-        String payload = "";
-
-        mHelper.launchPurchaseFlow(this, SKU_GAS, RC_REQUEST,
-                mPurchaseFinishedListener, payload);
+//        Log.d(TAG, "Buy gas button clicked.");
+//
+//        if (mSubscribedToInfiniteGas) {
+//            complain("No need! You're subscribed to infinite gas. Isn't that awesome?");
+//            return;
+//        }
+//
+//        if (mTank >= TANK_MAX) {
+//            complain("Your tank is full. Drive around a bit!");
+//            return;
+//        }
+//
+//        // launch the gas purchase UI flow.
+//        // We will be notified of completion via mPurchaseFinishedListener
+//        setWaitScreen(true);
+//        Log.d(TAG, "Launching purchase flow for gas.");
+//
+//        /* TODO: for security, generate your payload here for verification. See the comments on
+//         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
+//         *        an empty string, but on a production app you should carefully generate this. */
+//        String payload = "";
+//
+//        mHelper.launchPurchaseFlow(this, SKU_GAS, RC_REQUEST,
+//                mPurchaseFinishedListener, payload);
+    	IAPPlugin.getInstance().lauchPurchase("1.com.tapenjoy.slgx");
     }
 
     // User clicked the "Upgrade to Premium" button.

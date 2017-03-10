@@ -16,9 +16,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tapenjoy.SLGx" android:installLocation="preferExternal" android:theme="@android:style/Theme.NoTitleBar" android:versionCode="1" android:versionName="1.0">
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+  <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:anyDensity="true" />
 
     <!-- VERY IMPORTANT! Don't forget this permission, or in-app billing won't work. -->
     <uses-permission android:name="com.android.vending.BILLING" />
